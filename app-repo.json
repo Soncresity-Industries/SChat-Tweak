@@ -13,15 +13,9 @@
       "tintColor": "2f97dd",
       "versions": [
         {
-          "version": "301.0",
+          "version": "301.0_dev",
           "date": "2025-10-18",
           "size": 95274505,
-          "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v301.0/SChat.ipa"
-        },
-        {
-          "version": "301.0",
-          "date": "2025-10-18",
-          "size": 95274509,
           "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v301.0/SChat.ipa"
         }
       ],
