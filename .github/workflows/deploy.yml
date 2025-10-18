@@ -166,7 +166,7 @@ jobs:
 
       - name: Run patcher
         run: |
-          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
+          curl -L -o patcher https://github.com/Soncresity-Industries/SChat-ipa-patcher/releases/download/release-schat/patcher.mac-amd64
           chmod +x patcher
           ./patcher -d discord.ipa -o discord.ipa -i ./schat-ipa-icons.zip
 
