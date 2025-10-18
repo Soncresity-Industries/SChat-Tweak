@@ -1,6 +1,6 @@
 Package: app.schat
 Name: SChat
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
 Description: A client modification for Discord's mobile app.
 Maintainer: SkyKing_PX
