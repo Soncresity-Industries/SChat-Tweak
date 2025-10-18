@@ -13,19 +13,11 @@ on:
         description: "Release the build"
         required: true
         type: boolean
-      is_testflight:
-        default: false
-        description: "TestFlight build"
-        required: true
-        type: boolean
   workflow_call:
     inputs:
       ipa_url:
         required: true
         type: string
-      is_testflight:
-        required: true
-        type: boolean
       release:
         required: false
         type: boolean
@@ -272,14 +264,7 @@ jobs:
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          
-          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
-            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
-            VERSION="${VERSION}_${BUILD}"
-            APP_INDEX=1
-          else
-            APP_INDEX=0
-          fi
+          APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
