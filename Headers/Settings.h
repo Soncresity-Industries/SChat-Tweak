@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface BunnySettingsViewController
+@interface SChatSettingsViewController
     : UIViewController <UITableViewDelegate, UITableViewDataSource>
 - (instancetype)initWithVersion:(NSString *)version;
 @end
