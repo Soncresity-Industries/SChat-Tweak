@@ -137,12 +137,12 @@ jobs:
 
       - name: Download IPA icons
         run: |
-          curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
+          curl -L -o schat-ipa-icons.zip https://github.com/Soncresity-Industries/assets/raw/refs/heads/main/schat-ipa-icons.zip
 
       - name: Clone OpenInDiscord
         uses: actions/checkout@v4
         with:
-          repository: castdrian/OpenInDiscord
+          repository: Soncresity-Industries/OpenInDiscord
           path: OpenInDiscord
 
       - name: Build Safari Extension
@@ -176,7 +176,7 @@ jobs:
         run: |
           curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
           chmod +x patcher
-          ./patcher -d discord.ipa -o discord.ipa -i ./ipa-icons.zip
+          ./patcher -d discord.ipa -o discord.ipa -i ./schat-ipa-icons.zip
 
       - name: Install cyan
         run: pip install --force-reinstall https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip Pillow
