@@ -20,17 +20,6 @@
         }
       ],
       "appPermissions": {}
-    },
-    {
-      "name": "SChat (TestFlight)",
-      "bundleIdentifier": "com.hammerandchisel.discord.testflight",
-      "developerName": "Soncresity Industries",
-      "iconURL": "https://i.ibb.co/rGynSp6k/blue-1.png",
-      "localizedDescription": "A client mod for Discord (TestFlight builds)",
-      "subtitle": "A client mod for Discord (TestFlight)",
-      "tintColor": "2f97dd",
-      "versions": [],
-      "appPermissions": {}
     }
   ],
   "news": []
