@@ -10,14 +10,9 @@
       "iconURL": "https://i.ibb.co/rGynSp6k/blue-1.png",
       "localizedDescription": "A client mod for Discord",
       "subtitle": "A client mod for Discord",
-      "tintColor": "7289da",
+      "tintColor": "2f97dd",
       "versions": [
-        {
-          "version": "280.0",
-          "date": "2025-10-18",
-          "size": 90200000,
-          "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v280.0/Bunny.ipa"
-        }
+        
       ],
       "appPermissions": {}
     },
@@ -28,14 +23,9 @@
       "iconURL": "https://i.ibb.co/rGynSp6k/blue-1.png",
       "localizedDescription": "A client mod for Discord (TestFlight builds)",
       "subtitle": "A client mod for Discord (TestFlight)",
-      "tintColor": "7289da",
+      "tintColor": "2f97dd",
       "versions": [
-        {
-          "version": "233.0_59816",
-          "date": "2025-04-27",
-          "size": 94756624,
-          "downloadURL": "https://github.com/bunny-mod/BunnyTweak/releases/download/v233.0_59816/Bunny.ipa"
-        }
+        
       ],
       "appPermissions": {}
     }
