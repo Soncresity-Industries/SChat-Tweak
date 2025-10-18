@@ -10,7 +10,6 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       ipa_url: ""
-      is_testflight: false
       release: false
       caller_workflow: "ci"
     secrets: inherit 
