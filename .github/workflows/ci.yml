@@ -11,5 +11,7 @@ jobs:
     with:
       ipa_url: ""
       release: false
+      testing_build: false
+      pr_build: true
       caller_workflow: "ci"
     secrets: inherit 
