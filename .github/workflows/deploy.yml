@@ -13,6 +13,11 @@ on:
         description: "Release the build"
         required: true
         type: boolean
+      testing_build:
+        description: "Release as Testing build"
+        required: true
+        default: false
+        type: boolean
   workflow_call:
     inputs:
       ipa_url:
@@ -20,6 +25,10 @@ on:
         type: string
       release:
         required: false
+        type: boolean
+        default: true
+      testing_build:
+        required: true
         type: boolean
         default: true
       caller_workflow:
@@ -186,7 +195,8 @@ jobs:
   release-app:
     if: |
       inputs.caller_workflow != 'ci' && 
-      (github.event.inputs.release == 'true' || inputs.release == true)
+      (github.event.inputs.release == 'true' || inputs.release == true) &&
+      (github.event.inputs.testing_build != 'true' || inputs.testing_build != true)
     runs-on: macos-15
     needs: build-ipa
     permissions:
@@ -255,20 +265,57 @@ jobs:
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
+      
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
           name: ipa
 
+      - name: Extract Discord Version
+        if: github.event.inputs.testing_build || inputs.testing_build
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          
+          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
+            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
+            VERSION="${VERSION}_${BUILD}"
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          
+          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Get artifact download URL
+        if: github.event.inputs.testing_build || inputs.testing_build
+        id: get_artifact_url
+        run: |
+          ARTIFACT_INFO=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
+          ARTIFACT_URL=$(echo "$ARTIFACT_INFO" | jq -r '.artifacts[] | select(.name=="ipa") | .archive_download_url')
+          echo "download_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+
       - name: Update app-repo.json
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          APP_INDEX=0
+          if [[ "${{ github.event.inputs.testing_build || inputs.testing_build }}" == "true" ]]; then
+            APP_INDEX=1
+          else
+            APP_INDEX=0
+          fi
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
+          if [[ "${{ github.event.inputs.testing_build || inputs.testing_build }}" == "true" ]]; then
+            echo ${{ steps.get_artifact_url.outputs.download_url }}
+            DOWNLOAD_URL=${{ steps.get_artifact_url.outputs.download_url }}
+          else
+            DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
+          fi
+          
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
 
