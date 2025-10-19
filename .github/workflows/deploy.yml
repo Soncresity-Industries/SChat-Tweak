@@ -256,6 +256,7 @@ jobs:
       ((github.event.inputs.release == 'true' || inputs.release == true) || (github.event.inputs.testing_build == 'true' || inputs.testing_build == true))
     continue-on-error: true
     runs-on: macos-15
+    needs: build-ipa
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -265,10 +266,10 @@ jobs:
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
       
-      - name: Download IPA artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
-          name: ipa
+          merge-multiple: true
 
       - name: Extract Discord Version
         if: github.event.inputs.testing_build || inputs.testing_build
