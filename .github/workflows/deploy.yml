@@ -253,7 +253,7 @@ jobs:
   app-repo:
     if: |
       inputs.caller_workflow != 'ci' && 
-      ((github.event.inputs.release == 'true' || inputs.release == true) || (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
+      ((github.event.inputs.release == 'true' || inputs.release == true) || (github.event.inputs.testing_build == 'true' || inputs.testing_build == true))
     continue-on-error: true
     runs-on: macos-15
     steps:
