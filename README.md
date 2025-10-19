@@ -1,17 +1,9 @@
-> [!IMPORTANT]
-> ## Project Archival and Licensing Notice
-> 
-> **This project is no longer actively maintained and this repository has been archived.**
->
-> We want to thank all contributors and users for their support over the project's lifetime. While development has ceased, the code remains available for those who may find it useful.
->
-> If you want to fork, redistribute, or continue development of this project (BunnyTweak), read [Important Clarification Regarding Licensing](#important-clarification-regarding-licensing) to understand your rights and the actual applicable license.
-
-# BunnyTweak
+# SChat Tweak (iOS)
 
 ![screenshot](https://adriancastro.dev/c6wkhfl0rq1f.PNG)
 
-Tweak to inject [Bunny](https://github.com/pyoncord/Bunny) and [OpenInDiscord](https://github.com/castdrian/OpenInDiscord) into Discord. Forked from [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak) and modified to match with [BunnyXposed](https://github.com/pyoncord/BunnyXposed)'s behavior.
+Tweak to inject [SChat](https://github.com/Soncresity-Industries/SChat-iOS) and [OpenInDiscord](https://github.com/Soncresity-Industries/OpenInDiscord) into Discord. Forked from 
+[BunnyTweak](https://github.com/pyoncord/BunnyTweak) which is forked from [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak) and modified to match with [SChat-Xposed](https://github.com/Soncresity-Industries/SChat-Xposed)'s behavior.
 
 > [!WARNING]
 > When sideloading with an ADP account cert, some functionality will break. If you value these features, sideload with a local development certificate instead. There is a workaround available that fixes one of the issues. See below for details.
@@ -47,15 +39,14 @@ To resolve the fixable issue, you need to match the app's bundle ID with your pr
 
 ## Installation
 
-Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/releases/latest) tab.
-
-> [!NOTE]
-> Decrypted IPAs are sourced from the [Enmity](https://github.com/enmity-mod/) community. These are also used throughout Enmity related projects such as [enmity-mod/tweak](https://github.com/enmity-mod/tweak/) and [acquitelol/rosiecord](https://github.com/acquitelol/rosiecord).\
-> All credits are attributed to the owner(s).
+Builds can be found in the [Releases](https://github.com/Soncresity-Industries/SChat-Tweak/releases/latest) tab.
 
 ### Jailbroken
 
-- Add the apt repo to your package manager: <https://repo.adriancastro.dev>
+> [!IMPORTANT]
+> There currently isn't a repo for Jailbroken devices to install SChat.
+> For now please use the method below
+
 - Manually install by downloading the Debian package (or by building your own, see [Building](#building)) and adding it to your package manager
 
 ### Jailed
@@ -67,7 +58,7 @@ Builds can be found in the [Releases](https://github.com/pyoncord/BunnyTweak/rel
 > [!NOTE]
 > TrollStore may display an encryption warning, which you can disregard.
 
-- Download and install [Bunny.ipa](https://github.com/pyoncord/BunnyTweak/releases/latest/download/Bunny.ipa) using your preferred sideloading method.
+- Download and install [SChat.ipa](https://github.com/Soncresity-Industries/SChat-Tweak/releases/latest/download/SChat.ipa) using your preferred sideloading method.
 
 ## Building
 
@@ -96,7 +87,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/theos/theos/master/bin/i
 
 If you've already installed theos, you can run `$THEOS/bin/update-theos` to make sure it's up to date.
 
-5. Clone this repository via `git clone git@github.com:pyoncord/BunnyTweak.git` and `cd` into it.
+5. Clone this repository via `git clone git@github.com:Soncresity-Industries/SChat-Tweak.git` and `cd` into it.
 
 6. To build, you can run `make package`.
 
@@ -106,7 +97,7 @@ The resulting `.deb` file will be in the `packages` folder.
 
 ## Contributors
 
-[![Contributors](https://contrib.rocks/image?repo=bunny-mod/BunnyTweak)](https://github.com/bunny-mod/BunnyTweak/graphs/contributors)
+[![Contributors](https://contrib.rocks/image?repo=Soncresity-Industries/SChat-Tweak)](https://github.com/Soncresity-Industries/SChat-Tweak/graphs/contributors)
 
 ## Important Clarification Regarding Licensing
 
@@ -122,7 +113,3 @@ As the repository owner, and in the interest of clarity upon archiving this proj
 - This means **you may freely fork, modify, and redistribute this codebase in accordance with the OSL 3.0** without needing to meet arbitrary "substantial modification" thresholds.
 
 To reflect this, the `LICENSE` file has been restored to contain only the original OSL 3.0 text prior to archiving.
-
-
-<!-- @vladdy was here, battling all these steps so you don't have to. Have fun! :3 -->
-<!-- @castdrian also was here simplifying these steps immensely -->

@@ -12,6 +12,6 @@ packages/
 
 venv/
 patcher
-ipa-icons.zip
+schat-ipa-icons.zip
 *.ipa
 OpenInDiscord/
