@@ -10,4 +10,5 @@ jobs:
     with:
       ipa_url: ${{ github.event.client_payload.ipa_url }}
       release: true
+      testing_build: false
     secrets: inherit
