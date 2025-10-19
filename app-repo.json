@@ -29,7 +29,14 @@
       "localizedDescription": "A client mod for Discord",
       "subtitle": "Test",
       "tintColor": "2f97dd",
-      "versions": [],
+      "versions": [
+        {
+          "version": "218.0",
+          "date": "2025-10-19",
+          "size": 87034928,
+          "downloadURL": "https://api.github.com/repos/Soncresity-Industries/SChat-Tweak/actions/artifacts/4312146217/zip"
+        }
+      ],
       "appPermissions": {}
     }
   ],
