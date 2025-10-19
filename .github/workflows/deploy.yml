@@ -266,27 +266,6 @@ jobs:
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
       
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-
-      - name: Extract Discord Version
-        if: github.event.inputs.testing_build || inputs.testing_build
-        run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
-          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          
-          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
-            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
-            VERSION="${VERSION}_${BUILD}"
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
-          
-          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
-
       - name: Get artifact download URL
         if: github.event.inputs.testing_build || inputs.testing_build
         id: get_artifact_url
