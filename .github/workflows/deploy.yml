@@ -253,10 +253,9 @@ jobs:
   app-repo:
     if: |
       inputs.caller_workflow != 'ci' && 
-      (github.event.inputs.release == 'true' || inputs.release == true)
+      ((github.event.inputs.release == 'true' || inputs.release == true) || (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
     continue-on-error: true
     runs-on: macos-15
-    needs: release-app
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
