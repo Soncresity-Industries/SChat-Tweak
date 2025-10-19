@@ -265,6 +265,11 @@ jobs:
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
       
       - name: Get artifact download URL
         if: github.event.inputs.testing_build || inputs.testing_build
