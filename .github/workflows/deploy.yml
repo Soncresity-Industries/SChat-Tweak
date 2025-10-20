@@ -300,6 +300,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ipa
+
       - name: Push IPA to builds branch
         run: |
           git config user.name "github-actions"
@@ -335,7 +340,7 @@ jobs:
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://raw.githubusercontent.com/Soncresity-Industries/${{ github.repository }}/builds/ipa.ipa
+          DOWNLOAD_URL=https://raw.githubusercontent.com/Soncresity-Industries/${{ github.repository }}/testing-builds/ipa.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
 
