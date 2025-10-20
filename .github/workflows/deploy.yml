@@ -195,8 +195,7 @@ jobs:
   release-app:
     if: |
       inputs.caller_workflow != 'ci' && 
-      (github.event.inputs.release == 'true' || inputs.release == true) &&
-      (github.event.inputs.testing_build != 'true' || inputs.testing_build != true)
+      (github.event.inputs.release == 'true' || inputs.release == true)
     runs-on: macos-15
     needs: build-ipa
     permissions:
@@ -250,10 +249,48 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  app-repo:
+  app-repo-rel:
     if: |
       inputs.caller_workflow != 'ci' && 
-      ((github.event.inputs.release == 'true' || inputs.release == true) || (github.event.inputs.testing_build == 'true' || inputs.testing_build == true))
+      (github.event.inputs.release == 'true' || inputs.release == true)
+    continue-on-error: true
+    runs-on: macos-15
+    needs: release-app
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract App Name
+        run: |
+          NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ipa
+
+      - name: Update app-repo.json (Release)
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          APP_INDEX=0
+          
+          DATE=$(date -u +"%Y-%m-%d")
+          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
+          NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
+          jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
+
+      - uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "chore: update app-repo.json (Release)"
+          add: app-repo.json
+
+  app-repo-t:
+    if: |
+      inputs.caller_workflow != 'ci' && 
+      (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
     continue-on-error: true
     runs-on: macos-15
     needs: build-ipa
@@ -265,46 +302,25 @@ jobs:
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
-
-      - name: Download build artifacts
+      - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
-          merge-multiple: true
-      
-      - name: Get artifact download URL
-        if: github.event.inputs.testing_build || inputs.testing_build
-        id: get_artifact_url
-        run: |
-          ARTIFACT_INFO=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts)
-          ARTIFACT_URL=$(echo "$ARTIFACT_INFO" | jq -r '.artifacts[] | select(.name=="ipa") | .archive_download_url')
-          echo "download_url=$ARTIFACT_URL" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ github.token }}
+          name: ipa
 
-      - name: Update app-repo.json
+      - name: Update app-repo.json (Testing)
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          if [[ "${{ github.event.inputs.testing_build || inputs.testing_build }}" == "true" ]]; then
-            APP_INDEX=1
-          else
-            APP_INDEX=0
-          fi
+          APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
-          if [[ "${{ github.event.inputs.testing_build || inputs.testing_build }}" == "true" ]]; then
-            echo ${{ steps.get_artifact_url.outputs.download_url }}
-            DOWNLOAD_URL=${{ steps.get_artifact_url.outputs.download_url }}
-          else
-            DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
-          fi
-          
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
 
       - uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: "chore: update app-repo.json"
+          message: "chore: update app-repo.json (Testing)"
           add: app-repo.json
