@@ -19,16 +19,10 @@
           "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v301.0/SChat.ipa"
         }
       ],
-      "appPermissions": [
-        {
-          "type": "camera",
-          "usageDescription": "Used to capture photos or videos directly within the app."
-        },
-        {
-          "type": "microphone",
-          "usageDescription": "Used to enable voice input features."
-        }
-      ]
+      "appPermissions": {
+        "camera": "Used to capture photos or videos directly within the app.",
+        "microphone": "Used to enable voice input features."
+      }
     },
     {
       "name": "SChat (Testing | Unstable)",
@@ -46,16 +40,10 @@
           "downloadURL": "https://raw.githubusercontent.com/Soncresity-Industries/Soncresity-Industries/SChat-Tweak/testing-builds/ipa.ipa"
         }
       ],
-      "appPermissions": [
-        {
-          "type": "camera",
-          "usageDescription": "Used to capture photos or videos directly within the app."
-        },
-        {
-          "type": "microphone",
-          "usageDescription": "Used to enable voice input features."
-        }
-      ]
+      "appPermissions": {
+        "camera": "Used to capture photos or videos directly within the app.",
+        "microphone": "Used to enable voice input features."
+      }
     }
   ],
   "news": []
