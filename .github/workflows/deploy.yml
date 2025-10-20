@@ -287,13 +287,33 @@ jobs:
           message: "chore: update app-repo.json (Release)"
           add: app-repo.json
 
-  app-repo-t:
+  publish-testing:
+    runs-on: macos-15
     if: |
       inputs.caller_workflow != 'ci' && 
       (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
+    needs: build-ipa
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Push IPA to builds branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git fetch origin
+          git checkout -B testing-builds
+          git add ${{ env.APP_NAME }}.ipa
+          git commit -m "Update testing build"
+          git push -f origin testing-builds
+
+  app-repo-t:
     continue-on-error: true
     runs-on: macos-15
-    needs: build-ipa
+    needs: publish-testing
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -315,7 +335,7 @@ jobs:
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}.ipa
+          DOWNLOAD_URL=https://raw.githubusercontent.com/Soncresity-Industries/${{ github.repository }}/builds/ipa.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
 
