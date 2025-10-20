@@ -303,7 +303,7 @@ jobs:
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
-          name: ipa
+          merge-multiple: true
 
       - name: Push IPA to builds branch
         run: |
