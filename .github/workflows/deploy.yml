@@ -314,7 +314,7 @@ jobs:
           git config user.email "actions@github.com"
           git fetch origin
           git checkout -B testing-builds
-          git add SChat.ipa
+          git add -f SChat.ipa
           git commit -m "Update testing build"
           git push -f origin testing-builds
 
