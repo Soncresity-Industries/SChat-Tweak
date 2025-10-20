@@ -343,7 +343,7 @@ jobs:
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://raw.githubusercontent.com/Soncresity-Industries/${{ github.repository }}/testing-builds/ipa.ipa
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/raw/refs/heads/testing-builds/SChat.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo-testing.json > temp.json && mv temp.json app-repo-testing.json
 
