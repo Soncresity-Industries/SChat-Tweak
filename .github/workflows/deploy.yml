@@ -339,7 +339,7 @@ jobs:
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          APP_INDEX=0
+          APP_INDEX=1
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
