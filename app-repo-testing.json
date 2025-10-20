@@ -1,0 +1,29 @@
+{
+  "name": "[Testing] SChat iOS App Repo",
+  "identifier": "dev.soncresityindustries.schat-ios.repo",
+  "iconURL": "https://i.ibb.co/CpmP7FBM/si-logo-new.png",
+  "apps": [
+    {
+      "name": "SChat (Testing | Unstable)",
+      "bundleIdentifier": "com.hammerandchisel.discord",
+      "developerName": "Soncresity Industries",
+      "iconURL": "https://i.ibb.co/rGynSp6k/blue-1.png",
+      "localizedDescription": "Soncresity Industries' Discord Client Mod forked from bunny-mod and redistributed as SChat or Serephix Chat. **Warning** This App is for Testing specific (unstable) features. Temporary App **Downgrades** also fall under this category.",
+      "subtitle": "[Testing Builds] Soncresity Industries' Discord Client Mod",
+      "tintColor": "2f97dd",
+      "versions": [
+        {
+          "version": "218.0",
+          "date": "2025-10-20",
+          "size": 87034928,
+          "downloadURL": "https://raw.githubusercontent.com/Soncresity-Industries/Soncresity-Industries/SChat-Tweak/testing-builds/ipa.ipa"
+        }
+      ],
+      "appPermissions": {
+        "camera": "Used to capture photos or videos directly within the app.",
+        "microphone": "Used to enable voice input features."
+      }
+    }
+  ],
+  "news": []
+}
