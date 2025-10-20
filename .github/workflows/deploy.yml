@@ -335,20 +335,20 @@ jobs:
         with:
           name: ipa
 
-      - name: Update app-repo.json (Testing)
+      - name: Update app-repo-testing.json
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          APP_INDEX=1
+          APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
           DOWNLOAD_URL=https://raw.githubusercontent.com/Soncresity-Industries/${{ github.repository }}/testing-builds/ipa.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
-          jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
+          jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo-testing.json > temp.json && mv temp.json app-repo-testing.json
 
       - uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: "chore: update app-repo.json (Testing)"
-          add: app-repo.json
+          message: "chore: update app-repo-testing.json"
+          add: app-repo-testing.json
