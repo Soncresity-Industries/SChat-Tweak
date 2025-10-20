@@ -305,6 +305,9 @@ jobs:
         with:
           merge-multiple: true
 
+      - name: [DEBUG] List files
+        run: ls -la
+        
       - name: Push IPA to builds branch
         run: |
           git config user.name "github-actions"
