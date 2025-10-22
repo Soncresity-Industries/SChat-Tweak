@@ -97,19 +97,10 @@ The resulting `.deb` file will be in the `packages` folder.
 
 ## Contributors
 
+> [!IMPORTANT]
+> This repo has been forked from the @bunny-mod/BunnyTweak Repo.
+> This project is merely a continuation of the original Software just under a different name and more features that we have planned for the future.
+> As such all credit goes to the anazing creators of Bunny and BunnyTweak.
+> **This project is licensed under the Open Software License 3.0 (OSL 3.0)**
+
 [![Contributors](https://contrib.rocks/image?repo=Soncresity-Industries/SChat-Tweak)](https://github.com/Soncresity-Industries/SChat-Tweak/graphs/contributors)
-
-## Important Clarification Regarding Licensing
-
-This project was originally licensed under the **Open Software License 3.0 (OSL 3.0)**.
-
-An amendment attempting to add a "Substantial Changes Requirement" was introduced in commit `b7cd1471f7d9dd79fe7832e7e7face296f2fd6a6`. This amendment claimed retroactive effect starting from commit `c568969333ae20bbbb6e924f6404e4f02fb65fd7`, subsequent to significant code revisions.
-
-As the repository owner, and in the interest of clarity upon archiving this project, please note the following:
-
-- Applying license changes retroactively is generally invalid. All code committed and distributed *before* the amendment was actually introduced in `b7cd147` was under the standard OSL 3.0 terms applicable at that time.
-- The attempt to make this amendment effective retroactively (from commit `c568969`, before it was introduced in `b7cd147`) is procedurally invalid. Additionally, the Open Software License 3.0, like most standard open-source licenses, is intended to be used without modification to its own terms. Creating custom amendments *to the OSL 3.0 text itself* raises significant questions about the resulting license's validity and enforceability.
-- Given the procedural issues, particularly the invalid retroactive application, the repository owner considers the amendment non-binding. The **entire codebase within this repository, reflecting its state upon archival, is intended to remain governed by the standard, unmodified Open Software License 3.0**, as contained in the `LICENSE` file prior to commit `b7cd147`. Versions of the code prior to commit `b7cd147` are unequivocally available under the standard OSL 3.0.
-- This means **you may freely fork, modify, and redistribute this codebase in accordance with the OSL 3.0** without needing to meet arbitrary "substantial modification" thresholds.
-
-To reflect this, the `LICENSE` file has been restored to contain only the original OSL 3.0 text prior to archiving.
