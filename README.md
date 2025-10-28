@@ -1,7 +1,5 @@
 # SChat Tweak (iOS)
 
-![screenshot](https://adriancastro.dev/c6wkhfl0rq1f.PNG)
-
 Tweak to inject [SChat](https://github.com/Soncresity-Industries/SChat-Mobile) into Discord. Forked from 
 [BunnyTweak](https://github.com/pyoncord/BunnyTweak) which is forked from [VendettaTweak](https://github.com/vendetta-mod/VendettaTweak) and modified to match with [SChat-Xposed](https://github.com/Soncresity-Industries/SChat-Xposed)'s behavior.
 
