@@ -13,21 +13,22 @@ on:
         description: "Release the build"
         required: true
         type: boolean
-      is_testflight:
-        default: false
-        description: "TestFlight build"
+      testing_build:
+        description: "Release as Testing build"
         required: true
+        default: false
         type: boolean
   workflow_call:
     inputs:
       ipa_url:
         required: true
         type: string
-      is_testflight:
-        required: true
-        type: boolean
       release:
         required: false
+        type: boolean
+        default: true
+      testing_build:
+        required: true
         type: boolean
         default: true
       caller_workflow:
@@ -137,32 +138,8 @@ jobs:
 
       - name: Download IPA icons
         run: |
-          curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
-
-      - name: Clone OpenInDiscord
-        uses: actions/checkout@v4
-        with:
-          repository: castdrian/OpenInDiscord
-          path: OpenInDiscord
-
-      - name: Build Safari Extension
-        run: |
-          cd OpenInDiscord
-          xcodebuild build \
-            -target "OpenInDiscord Extension" \
-            -configuration Release \
-            -sdk iphoneos \
-            CONFIGURATION_BUILD_DIR="build" \
-            PRODUCT_NAME="OpenInDiscord" \
-            PRODUCT_BUNDLE_IDENTIFIER="com.hammerandchisel.discord.OpenInDiscord" \
-            PRODUCT_MODULE_NAME="OpenInDiscordExt" \
-            SKIP_INSTALL=NO \
-            DEVELOPMENT_TEAM="" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO \
-            ONLY_ACTIVE_ARCH=NO | xcbeautify
-
+          curl -L -o schat-ipa-icons.zip https://github.com/Soncresity-Industries/assets/raw/refs/heads/main/schat-ipa-icons.zip
+      
       - name: Extract Values
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
@@ -171,19 +148,19 @@ jobs:
           ROOTLESS_DEB_FILE_NAME="${PACKAGE}_${VERSION}_iphoneos-arm64.deb"
           echo "ROOTLESS_DEB_FILE_NAME=$ROOTLESS_DEB_FILE_NAME" >> $GITHUB_ENV
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
-
+          
       - name: Run patcher
         run: |
-          curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
+          curl -L -o patcher https://github.com/Soncresity-Industries/SChat-ipa-patcher/releases/download/release-schat/patcher.mac-amd64
           chmod +x patcher
-          ./patcher -d discord.ipa -o discord.ipa -i ./ipa-icons.zip
+          ./patcher -d discord.ipa -o discord.ipa -i ./schat-ipa-icons.zip
 
       - name: Install cyan
         run: pip install --force-reinstall https://github.com/asdfzxcvbn/pyzule-rw/archive/main.zip Pillow
 
-      - name: Inject tweak and extension
+      - name: Inject tweak
         run: |
-          cyan -duwsgq -i discord.ipa -o ${{ env.APP_NAME }}.ipa -f ${{ env.ROOTLESS_DEB_FILE_NAME }} OpenInDiscord/build/OpenInDiscord.appex
+          cyan -duwsgq -i discord.ipa -o ${{ env.APP_NAME }}.ipa -f ${{ env.ROOTLESS_DEB_FILE_NAME }}
 
       - name: Upload ipa as artifact
         uses: actions/upload-artifact@v4
@@ -248,30 +225,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update Repository
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.WORKFLOW_DISPATCH_TOKEN }}
-          script: |
-            const assets = JSON.parse('${{ steps.create_release.outputs.assets }}');
-            const debAsset = assets.find(asset => asset.name === '${{ env.ROOTLESS_DEB_FILE_NAME }}');
-            
-            if (!debAsset) {
-              core.setFailed('Could not find DEB asset in release');
-              return;
-            }
-            
-            await github.rest.repos.createDispatchEvent({
-              owner: 'castdrian',
-              repo: 'apt-repo',
-              event_type: 'package-update',
-              client_payload: {
-                package_url: debAsset.browser_download_url,
-                package_name: '${{ env.ROOTLESS_DEB_FILE_NAME }}'
-              }
-            });
-
-  app-repo:
+  app-repo-rel:
     if: |
       inputs.caller_workflow != 'ci' && 
       (github.event.inputs.release == 'true' || inputs.release == true)
@@ -291,18 +245,11 @@ jobs:
         with:
           name: ipa
 
-      - name: Update app-repo.json
+      - name: Update app-repo.json (Release)
         run: |
           unzip -q ${{ env.APP_NAME }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
-          
-          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
-            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
-            VERSION="${VERSION}_${BUILD}"
-            APP_INDEX=1
-          else
-            APP_INDEX=0
-          fi
+          APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
           IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
@@ -313,5 +260,71 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
-          message: "chore: update app-repo.json"
+          message: "chore: update app-repo.json (Release)"
           add: app-repo.json
+
+  publish-testing:
+    runs-on: macos-15
+    if: |
+      inputs.caller_workflow != 'ci' && 
+      (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
+    needs: build-ipa
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      
+      - name: List Files
+        run: ls -la
+        
+      - name: Push IPA to builds branch
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git fetch origin
+          git checkout -B testing-builds
+          git add -f SChat.ipa
+          git commit -m "Update testing build"
+          git push -f origin testing-builds
+
+  app-repo-t:
+    continue-on-error: true
+    runs-on: macos-15
+    needs: publish-testing
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract App Name
+        run: |
+          NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ipa
+
+      - name: Update app-repo-testing.json
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          APP_INDEX=0
+          
+          DATE=$(date -u +"%Y-%m-%d")
+          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}.ipa | awk '{print $5}')
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/raw/refs/heads/testing-builds/SChat.ipa
+          NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
+          jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo-testing.json > temp.json && mv temp.json app-repo-testing.json
+
+      - uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "chore: update app-repo-testing.json"
+          add: app-repo-testing.json

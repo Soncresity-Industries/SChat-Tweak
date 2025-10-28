@@ -156,7 +156,7 @@ void setCustomBundleURL(NSURL *url, UIViewController *presenter) {
 void resetCustomBundleURL(UIViewController *presenter) {
     LoaderConfig *config        = [LoaderConfig getLoaderConfig];
     config.customLoadUrlEnabled = NO;
-    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/bunny.js"];
+    config.customLoadUrl        = [NSURL URLWithString:@"http://localhost:4040/schat.js"];
     [config saveConfig];
     removeCachedBundle();
     gracefulExit(presenter);
@@ -238,7 +238,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                  NSURLSession *session);
 
 void showBundleSelector(UIViewController *presenter) {
-    BunnyLog(@"Starting bundle selector...");
+    SChatLog(@"Starting bundle selector...");
 
     UIAlertController *loadingAlert =
         [UIAlertController alertControllerWithTitle:@"Loading"
@@ -246,11 +246,11 @@ void showBundleSelector(UIViewController *presenter) {
                                      preferredStyle:UIAlertControllerStyleAlert];
     [presenter presentViewController:loadingAlert animated:YES completion:nil];
 
-    NSURL *url = [NSURL URLWithString:@"https://api.github.com/repos/bunny-mod/builds/branches"];
+    NSURL *url = [NSURL URLWithString:@"https://api.github.com/repos/Soncresity-Industries/SChat-builds/branches"];
     NSURLSession *session = [NSURLSession
         sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
-    BunnyLog(@"Fetching branches from: %@", url);
+    SChatLog(@"Fetching branches from: %@", url);
 
     [[session
           dataTaskWithURL:url
@@ -314,7 +314,7 @@ void showBundleSelector(UIViewController *presenter) {
 
 static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                  NSURLSession *session) {
-    BunnyLog(@"Fetching commits for branch: %@", branch);
+    SChatLog(@"Fetching commits for branch: %@", branch);
 
     UIAlertController *loadingCommits =
         [UIAlertController alertControllerWithTitle:@"Loading"
@@ -324,7 +324,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
 
     NSString *commitsUrl = [NSString
         stringWithFormat:
-            @"https://api.github.com/repos/bunny-mod/builds/commits?sha=%@&per_page=10", branch];
+            @"https://api.github.com/repos/Soncresity-Industries/SChat-builds/commits?sha=%@&per_page=10", branch];
     NSURL *commitsURL    = [NSURL URLWithString:commitsUrl];
 
     [[session
@@ -394,9 +394,10 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
                                                                                    @"raw."
                                                                                    @"githubusercont"
                                                                                    @"ent.com/"
-                                                                                   @"bunny-mod/"
-                                                                                   @"builds/%@/"
-                                                                                   @"bunny.min.js",
+                                                                                   @"Soncresity-"
+                                                                                   @"Industries/"
+                                                                                   @"SChat-builds/%@/"
+                                                                                   @"schat.min.js",
                                                                                    sha];
                                                                        NSURL *url = [NSURL
                                                                            URLWithString:bundleUrl];
@@ -426,7 +427,7 @@ void removeCachedBundle(void) {
     NSError *error   = nil;
     [[NSFileManager defaultManager] removeItemAtURL:bundleURL error:&error];
     if (error) {
-        BunnyLog(@"Failed to remove cached bundle: %@", error);
+        SChatLog(@"Failed to remove cached bundle: %@", error);
     }
 }
 

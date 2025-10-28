@@ -49,7 +49,7 @@ fi
 print_success "Built tweak"
 
 print_status "Downloading IPA icons..."
-curl -L -o ipa-icons.zip https://raw.githubusercontent.com/pyoncord/assets/main/ipa-icons.zip
+curl -L -o schat-ipa-icons.zip https://github.com/Soncresity-Industries/assets/raw/refs/heads/main/schat-ipa-icons.zip
 
 if [ $? -ne 0 ]; then
     print_error "Failed to download IPA icons"
@@ -58,7 +58,7 @@ fi
 print_success "Downloaded IPA icons"
 
 print_status "Downloading patcher..."
-curl -L -o patcher https://github.com/amsyarasyiq/bunny-ipa-patcher/releases/download/release-pyon/patcher.mac-amd64
+curl -L -o patcher https://github.com/Soncresity-Industries/SChat-ipa-patcher/releases/download/release-schat/patcher.mac-amd64
 chmod +x patcher
 
 if [ $? -ne 0 ]; then
@@ -69,7 +69,7 @@ print_success "Downloaded patcher"
 
 print_status "Cloning Safari extension..."
 rm -rf OpenInDiscord
-git clone https://github.com/castdrian/OpenInDiscord
+git clone https://github.com/Soncresity-Industries/OpenInDiscord
 
 if [ $? -ne 0 ]; then
     print_error "Failed to clone Safari extension"
@@ -102,7 +102,7 @@ fi
 print_success "Built Safari extension"
 
 print_status "Patching IPA..."
-./patcher -d "$IPA_FILE" -o discord-patched.ipa -i ./ipa-icons.zip
+./patcher -d "$IPA_FILE" -o discord-patched.ipa -i ./schat-ipa-icons.zip
 
 if [ $? -ne 0 ]; then
     print_error "Failed to patch IPA"
@@ -138,6 +138,6 @@ deactivate
 print_success "Successfully created $NAME.ipa"
 
 print_status "Cleaning up..."
-rm -f patcher ipa-icons.zip discord-patched.ipa
+rm -f patcher schat-ipa-icons.zip discord-patched.ipa
 
 print_success "Successfully created $NAME.ipa" 

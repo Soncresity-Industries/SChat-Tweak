@@ -122,7 +122,7 @@ static BOOL isSelfCall(void)
 %hook NSFileManager
 - (NSURL *)containerURLForSecurityApplicationGroupIdentifier:(NSString *)groupIdentifier
 {
-    BunnyLog(@"containerURLForSecurityApplicationGroupIdentifier called! %@",
+    SChatLog(@"containerURLForSecurityApplicationGroupIdentifier called! %@",
              groupIdentifier ?: @"nil");
 
     NSArray *paths    = [self URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];

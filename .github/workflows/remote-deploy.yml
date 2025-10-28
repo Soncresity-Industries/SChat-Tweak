@@ -9,6 +9,6 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       ipa_url: ${{ github.event.client_payload.ipa_url }}
-      is_testflight: ${{ github.event.client_payload.is_testflight }}
       release: true
+      testing_build: false
     secrets: inherit

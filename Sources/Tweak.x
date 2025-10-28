@@ -9,7 +9,7 @@
 #import "Utils.h"
 
 static NSURL         *source;
-static NSString      *bunnyPatchesBundlePath;
+static NSString      *schatPatchesBundlePath;
 static NSURL         *pyoncordDirectory;
 static LoaderConfig  *loaderConfig;
 static NSTimeInterval shakeStartTime = 0;
@@ -26,28 +26,28 @@ id                    gBridge        = nil;
     }
 
     gBridge = self;
-    BunnyLog(@"Stored bridge reference: %@", gBridge);
+    SChatLog(@"Stored bridge reference: %@", gBridge);
 
-    NSBundle *bunnyPatchesBundle = [NSBundle bundleWithPath:bunnyPatchesBundlePath];
-    if (!bunnyPatchesBundle)
+    NSBundle *schatPatchesBundle = [NSBundle bundleWithPath:schatPatchesBundlePath];
+    if (!schatPatchesBundle)
     {
-        BunnyLog(@"Failed to load BunnyPatches bundle from path: %@", bunnyPatchesBundlePath);
+        SChatLog(@"Failed to load SChatPatches bundle from path: %@", schatPatchesBundlePath);
         showErrorAlert(@"Loader Error",
                        @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
-    NSURL *patchPath = [bunnyPatchesBundle URLForResource:@"payload-base" withExtension:@"js"];
+    NSURL *patchPath = [schatPatchesBundle URLForResource:@"payload-base" withExtension:@"js"];
     if (!patchPath)
     {
-        BunnyLog(@"Failed to find payload-base.js in bundle");
+        SChatLog(@"Failed to find payload-base.js in bundle");
         showErrorAlert(@"Loader Error",
                        @"Failed to initialize mod loader. Please reinstall the tweak.", nil);
         return %orig;
     }
 
     NSData *patchData = [NSData dataWithContentsOfURL:patchPath];
-    BunnyLog(@"Injecting loader");
+    SChatLog(@"Injecting loader");
     %orig(patchData, source, YES);
 
     __block NSData *bundle =
@@ -60,13 +60,13 @@ id                    gBridge        = nil;
     if (loaderConfig.customLoadUrlEnabled && loaderConfig.customLoadUrl)
     {
         bundleUrl = loaderConfig.customLoadUrl;
-        BunnyLog(@"Using custom load URL: %@", bundleUrl.absoluteString);
+        SChatLog(@"Using custom load URL: %@", bundleUrl.absoluteString);
     }
     else
     {
         bundleUrl = [NSURL
-            URLWithString:@"https://raw.githubusercontent.com/bunny-mod/builds/main/bunny.min.js"];
-        BunnyLog(@"Using default bundle URL: %@", bundleUrl.absoluteString);
+            URLWithString:@"https://raw.githubusercontent.com/Soncresity-Industries/SChat-builds/main/schat.min.js"];
+        SChatLog(@"Using default bundle URL: %@", bundleUrl.absoluteString);
     }
 
     NSMutableURLRequest *bundleRequest =
@@ -125,13 +125,13 @@ id                    gBridge        = nil;
                                                                     error:&jsonError];
         if (!jsonError)
         {
-            BunnyLog(@"Loading theme data...");
+            SChatLog(@"Loading theme data...");
             if (themeDict[@"data"])
             {
                 NSDictionary *data = themeDict[@"data"];
                 if (data[@"semanticColors"] && data[@"rawColors"])
                 {
-                    BunnyLog(@"Initializing theme colors from theme data");
+                    SChatLog(@"Initializing theme colors from theme data");
                     initializeThemeColors(data[@"semanticColors"], data[@"rawColors"]);
                 }
             }
@@ -144,12 +144,12 @@ id                    gBridge        = nil;
         }
         else
         {
-            BunnyLog(@"Error parsing theme JSON: %@", jsonError);
+            SChatLog(@"Error parsing theme JSON: %@", jsonError);
         }
     }
     else
     {
-        BunnyLog(@"No theme data found at path: %@",
+        SChatLog(@"No theme data found at path: %@",
                  [pyoncordDirectory URLByAppendingPathComponent:@"current-theme.json"]);
     }
 
@@ -163,14 +163,14 @@ id                    gBridge        = nil;
                                                                    error:&jsonError];
         if (!jsonError && fontDict[@"main"])
         {
-            BunnyLog(@"Found font configuration, applying...");
+            SChatLog(@"Found font configuration, applying...");
             patchFonts(fontDict[@"main"], fontDict[@"name"]);
         }
     }
 
     if (bundle)
     {
-        BunnyLog(@"Executing JS bundle");
+        SChatLog(@"Executing JS bundle");
         %orig(bundle, source, async);
     }
 
@@ -189,7 +189,7 @@ id                    gBridge        = nil;
             {
                 if ([[fileURL pathExtension] isEqualToString:@"js"])
                 {
-                    BunnyLog(@"Executing preload JS file %@", fileURL.absoluteString);
+                    SChatLog(@"Executing preload JS file %@", fileURL.absoluteString);
                     NSData *data = [NSData dataWithContentsOfURL:fileURL];
                     if (data)
                     {
@@ -200,7 +200,7 @@ id                    gBridge        = nil;
         }
         else
         {
-            BunnyLog(@"Error reading contents of preloads directory");
+            SChatLog(@"Error reading contents of preloads directory");
         }
     }
 
@@ -243,39 +243,39 @@ id                    gBridge        = nil;
 {
     @autoreleasepool
     {
-        source = [NSURL URLWithString:@"bunny"];
+        source = [NSURL URLWithString:@"schat"];
 
         NSString *install_prefix = @"/var/jb";
         isJailbroken             = [[NSFileManager defaultManager] fileExistsAtPath:install_prefix];
 
         NSString *bundlePath =
-            [NSString stringWithFormat:@"%@/Library/Application Support/BunnyResources.bundle",
+            [NSString stringWithFormat:@"%@/Library/Application Support/SChatResources.bundle",
                                        install_prefix];
-        BunnyLog(@"Is jailbroken: %d", isJailbroken);
-        BunnyLog(@"Bundle path for jailbroken: %@", bundlePath);
+        SChatLog(@"Is jailbroken: %d", isJailbroken);
+        SChatLog(@"Bundle path for jailbroken: %@", bundlePath);
 
         NSString *jailedPath = [[NSBundle mainBundle].bundleURL.path
-            stringByAppendingPathComponent:@"BunnyResources.bundle"];
-        BunnyLog(@"Bundle path for jailed: %@", jailedPath);
+            stringByAppendingPathComponent:@"SChatResources.bundle"];
+        SChatLog(@"Bundle path for jailed: %@", jailedPath);
 
-        bunnyPatchesBundlePath = isJailbroken ? bundlePath : jailedPath;
-        BunnyLog(@"Selected bundle path: %@", bunnyPatchesBundlePath);
+        schatPatchesBundlePath = isJailbroken ? bundlePath : jailedPath;
+        SChatLog(@"Selected bundle path: %@", schatPatchesBundlePath);
 
         BOOL bundleExists =
-            [[NSFileManager defaultManager] fileExistsAtPath:bunnyPatchesBundlePath];
-        BunnyLog(@"Bundle exists at path: %d", bundleExists);
+            [[NSFileManager defaultManager] fileExistsAtPath:schatPatchesBundlePath];
+        SChatLog(@"Bundle exists at path: %d", bundleExists);
 
         NSError *error = nil;
         NSArray *bundleContents =
-            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:bunnyPatchesBundlePath
+            [[NSFileManager defaultManager] contentsOfDirectoryAtPath:schatPatchesBundlePath
                                                                 error:&error];
         if (error)
         {
-            BunnyLog(@"Error listing bundle contents: %@", error);
+            SChatLog(@"Error listing bundle contents: %@", error);
         }
         else
         {
-            BunnyLog(@"Bundle contents: %@", bundleContents);
+            SChatLog(@"Bundle contents: %@", bundleContents);
         }
 
         pyoncordDirectory = getPyoncordDirectory();
