@@ -1,4 +1,6 @@
 name: Remote IPA Update
+permissions:
+  contents: read
 
 on:
   repository_dispatch:
