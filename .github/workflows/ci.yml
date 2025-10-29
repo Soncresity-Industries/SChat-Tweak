@@ -6,6 +6,8 @@ on:
 
 jobs:
   build-check:
+    permissions:
+      contents: read
     name: Build Check
     uses: ./.github/workflows/deploy.yml
     with:
