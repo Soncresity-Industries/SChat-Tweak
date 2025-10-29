@@ -13,12 +13,6 @@
       "subtitle": "[Testing Builds] Soncresity Industries' Discord Client Mod",
       "tintColor": "2f97dd",
       "versions": [
-        {
-          "version": "218.0",
-          "date": "2025-10-20",
-          "size": 87034928,
-          "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/testing-builds/SChat.ipa"
-        }
       ],
       "appPermissions": {
         "camera": "Used to capture photos or videos directly within the app.",
