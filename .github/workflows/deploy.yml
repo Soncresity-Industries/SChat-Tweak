@@ -232,6 +232,8 @@ jobs:
     continue-on-error: true
     runs-on: macos-15
     needs: release-app
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
