@@ -50,13 +50,13 @@ Builds can be found in the [Releases](https://github.com/Soncresity-Industries/S
 ## Jailed
 ### Release Build Repo
 <div>
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="https://i.ibb.co/VcPbYqd7/altstore-diagonal-badge.png" alt="Add to AltStore" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="./.github/resources/altstore-diagonal-badge.png" alt="Add to AltStore" height="60"></a>
     &nbsp;
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="https://i.ibb.co/zTjbvgQY/sidestore-diagonal-badge.png" alt="Add to SideStore" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="./.github/resources/sidestore-diagonal-badge.png" alt="Add to SideStore" height="60"></a>
     &nbsp;
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="https://i.ibb.co/FbjqfC27/feather-diagonal-badge.png" alt="Add to Feather" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo.json"><img src="./.github/resources/feather-diagonal-badge.png" alt="Add to Feather" height="60"></a>
     &nbsp;
-    <a href="https://github.com/Soncresity-Industries/SChat-Tweak/releases/latest/download/SChat.ipa"><img src="https://i.ibb.co/9khcwRK0/github-releases-linear-badge.png" alt="Download from GitHub" height="60"></a>
+    <a href="https://github.com/Soncresity-Industries/SChat-Tweak/releases/latest/download/SChat.ipa"><img src="./.github/resources/github-releases-linear-badge.png" alt="Download from GitHub" height="60"></a>
     &nbsp;
 </div>
 
@@ -67,13 +67,13 @@ Builds can be found in the [Releases](https://github.com/Soncresity-Industries/S
 > **DO NOT USE IT IF YOU DON'T KNOW WHAT YOU'RE DOING**
 
 <div>
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="https://i.ibb.co/VcPbYqd7/altstore-diagonal-badge.png" alt="Add to AltStore" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="./.github/resources/altstore-diagonal-badge.png" alt="Add to AltStore" height="60"></a>
     &nbsp;
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="https://i.ibb.co/zTjbvgQY/sidestore-diagonal-badge.png" alt="Add to SideStore" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="./.github/resources/sidestore-diagonal-badge.png" alt="Add to SideStore" height="60"></a>
     &nbsp;
-    <a href="https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="https://i.ibb.co/FbjqfC27/feather-diagonal-badge.png" alt="Add to Feather" height="60"></a>
+    <a href="https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/main/app-repo-testing.json"><img src="./.github/resources/feather-diagonal-badge.png" alt="Add to Feather" height="60"></a>
     &nbsp;
-    <a href="https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/testing-builds/SChat.ipa"><img src="https://i.ibb.co/kg9TWqWQ/github-linear-badge.png" alt="Download from GitHub" height="60"></a>
+    <a href="https://github.com/Soncresity-Industries/SChat-Tweak/raw/refs/heads/testing-builds/SChat.ipa"><img src="./.github/resources/github-linear-badge.png" alt="Download from GitHub" height="60"></a>
     &nbsp;
 </div>
 
