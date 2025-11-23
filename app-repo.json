@@ -34,7 +34,7 @@
           "date": "2025-11-23",
           "size": 100192291,
           "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v305.1/SChat.ipa",
-          "localizedDescription": "SChat Changelog:\n*No internal App Changes*\n\nDiscord Changelog:\nSupported Changes:\n- We now offer WebM content support. This has been a bit of a platform parity gap, but iOS users like yourself can now view WebM video assets!\n- Fixed a bug where the Emoji Picker buttons to scroll to particular sections weren't navigating properly. […]\n- Resolved a bug that caused emojis in usernames to be cut off in the DM list. […]\n\nUnsupported Changes:\n- You'll now see custom emojis in your message notifications! […]"
+          "localizedDescription": "## SChat Changelog:\n*No internal App Changes*\n\n## Discord Changelog:\n### Supported Changes:\n- We now offer WebM content support. This has been a bit of a platform parity gap, but iOS users like yourself can now view WebM video assets!\n- Fixed a bug where the Emoji Picker buttons to scroll to particular sections weren't navigating properly. […]\n- Resolved a bug that caused emojis in usernames to be cut off in the DM list. […]\n\n### Unsupported Changes:\n- You'll now see custom emojis in your message notifications! […]"
         },
         {
           "version": "305.0",
