@@ -12,12 +12,24 @@
       "localizedDescription": "Soncresity Industries' Discord Client Mod forked from bunny-mod and redistributed as SChat or Serephix Chat. **Warning** This App is for Testing specific (unstable) features. Temporary App **Downgrades** also fall under this category.",
       "subtitle": "[Testing Builds] Soncresity Industries' Discord Client Mod",
       "tintColor": "2f97dd",
-      "versions": [
-      ],
       "appPermissions": {
-        "camera": "Used to capture photos or videos directly within the app.",
-        "microphone": "Used to enable voice input features."
-      }
+        "entitlements": [
+          "com.apple.developer.kernel.increased-memory-limit"
+        ],
+        "privacy": {
+          "LSRequiresIPhoneOS": "The guest app is requesting for this permission.",
+          "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
+          "NSBluetoothPeripheralUsageDescription": "The guest app is requesting for this permission.",
+          "NSCameraUsageDescription": "The guest app is requesting for this permission.",
+          "NSContactsUsageDescription": "The guest app is requesting for this permission.",
+          "NSFaceIDUsageDescription": "The guest app is requesting for this permission.",
+          "NSMicrophoneUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryAddUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission.",
+        }
+      },
+      "versions": [
+      ]
     }
   ],
   "news": []
