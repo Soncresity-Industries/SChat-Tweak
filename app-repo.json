@@ -12,6 +12,22 @@
       "localizedDescription": "Soncresity Industries' Discord Client Mod forked from bunny-mod and redistributed as SChat or Serephix Chat.",
       "subtitle": "Soncresity Industries' Discord Client Mod",
       "tintColor": "2f97dd",
+      "appPermissions": {
+        "entitlements": [
+          "com.apple.developer.kernel.increased-memory-limit"
+        ],
+        "privacy": {
+          "LSRequiresIPhoneOS": "The guest app is requesting for this permission.",
+          "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
+          "NSBluetoothPeripheralUsageDescription": "The guest app is requesting for this permission.",
+          "NSCameraUsageDescription": "The guest app is requesting for this permission.",
+          "NSContactsUsageDescription": "The guest app is requesting for this permission.",
+          "NSFaceIDUsageDescription": "The guest app is requesting for this permission.",
+          "NSMicrophoneUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryAddUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission.",
+        }
+      },
       "versions": [
         {
           "version": "305.1",
@@ -43,11 +59,7 @@
           "size": 95267137,
           "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v302.0/SChat.ipa"
         }
-      ],
-      "appPermissions": {
-        "camera": "Used to capture photos or videos directly within the app.",
-        "microphone": "Used to enable voice input features."
-      }
+      ]
     }
   ],
   "news": []
