@@ -11,7 +11,7 @@
       "iconURL": "https://i.ibb.co/rGynSp6k/blue-1.png",
       "localizedDescription": "Soncresity Industries' Discord Client Mod forked from bunny-mod and redistributed as SChat or Serephix Chat.",
       "subtitle": "Soncresity Industries' Discord Client Mod",
-      "tintColor": "2f97dd",
+      "tintColor": "#2F97DD",
       "appPermissions": {
         "entitlements": [
           "com.apple.developer.kernel.increased-memory-limit"
@@ -62,5 +62,16 @@
       ]
     }
   ],
-  "news": []
+  "news": [
+    {
+      "appID": "com.hammerandchisel.discord",
+      "caption": "Update of SChat just got released!",
+      "date": "2025-11-23T12:00:00Z",
+      "identifier": "release-305.1",
+      "notify": true,
+      "tintColor": "#2F97DD",
+      "title": "305.1 - SChat - 23/11/25",
+      "url": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/tag/v305.1"
+    }
+  ]
 }
