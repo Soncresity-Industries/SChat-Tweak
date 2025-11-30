@@ -30,6 +30,12 @@
       },
       "versions": [
         {
+          "version": "306.1",
+          "date": "2025-11-30",
+          "size": 99794920,
+          "downloadURL": "https://github.com/Soncresity-Industries/SChat-Tweak/releases/download/v306.1/SChat.ipa"
+        },
+        {
           "version": "305.1",
           "date": "2025-11-23",
           "size": 100192291,
