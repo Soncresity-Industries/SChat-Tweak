@@ -25,7 +25,7 @@
           "NSFaceIDUsageDescription": "The guest app is requesting for this permission.",
           "NSMicrophoneUsageDescription": "The guest app is requesting for this permission.",
           "NSPhotoLibraryAddUsageDescription": "The guest app is requesting for this permission.",
-          "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission."
         }
       },
       "versions": [
