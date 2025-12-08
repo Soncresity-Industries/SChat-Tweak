@@ -1,7 +1,7 @@
 name: Deploy Build
 permissions:
   contents: read
-run-name: ${{ github.event.inputs.release == 'true' && 'Release' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
+run-name: SChat ${{ github.event.inputs.release == 'true' && 'Release' || github.event.inputs.testing_build == 'true' && 'Testing Build' || 'Build' }} for ${{ github.event.inputs.ipa_url }}
 
 on:
   workflow_dispatch:
