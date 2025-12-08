@@ -278,7 +278,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -m "Add ${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa"
-          git push origin schat_ios
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/Soncresity-Industries/Website-Downloads.git schat_ios
 
   app-repo-rel:
     if: |
