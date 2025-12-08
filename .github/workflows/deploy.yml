@@ -201,6 +201,8 @@ jobs:
       (github.event.inputs.release == 'true' || inputs.release == true)
     runs-on: macos-15
     needs: build-ipa
+    outputs:
+      discord_version: ${{ needs.build-ipa.outputs.discord_version }}
     permissions:
       contents: write
 
@@ -262,7 +264,7 @@ jobs:
 
       - name: Copy renamed IPA to other repo
         run: |
-          cp -f "${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa" website-downloads/
+          cp -f "${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa" website-downloads/
         
       - name: Commit and push to schat_ios branch
         run: |
@@ -270,7 +272,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Add ${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa"
+          git commit -m "Add ${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa"
           git push origin schat_ios
 
   app-repo-rel:
@@ -298,13 +300,13 @@ jobs:
 
       - name: Update app-repo.json (Release)
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
-          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa
+          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa | awk '{print $5}')
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/v$VERSION/${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo.json > temp.json && mv temp.json app-repo.json
 
@@ -320,6 +322,8 @@ jobs:
       inputs.caller_workflow != 'ci' && 
       (github.event.inputs.testing_build == 'true' || inputs.testing_build == true)
     needs: build-ipa
+    outputs:
+      discord_version: ${{ needs.build-ipa.outputs.discord_version }}
     permissions:
       contents: write
 
@@ -364,13 +368,13 @@ jobs:
 
       - name: Update app-repo-testing.json
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ needs.publish-testing.outputs.discord_version }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           APP_INDEX=0
           
           DATE=$(date -u +"%Y-%m-%d")
-          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa | awk '{print $5}')
-          DOWNLOAD_URL=https://github.com/${{ github.repository }}/raw/refs/heads/testing-builds/${{ env.APP_NAME }}-${{ needs.build-ipa.outputs.discord_version }}.ipa
+          IPA_SIZE=$(ls -l ${{ env.APP_NAME }}-${{ needs.publish-testing.outputs.discord_version }}.ipa | awk '{print $5}')
+          DOWNLOAD_URL=https://github.com/${{ github.repository }}/raw/refs/heads/testing-builds/${{ env.APP_NAME }}-${{ needs.publish-testing.outputs.discord_version }}.ipa
           NEW_ENTRY=$(jq -n --arg version "$VERSION" --arg date "$DATE" --arg size "$IPA_SIZE" --arg downloadURL "$DOWNLOAD_URL" '{version: $version, date: $date, size: ($size | tonumber), downloadURL: $downloadURL}')
           jq --argjson newEntry "$NEW_ENTRY" --argjson index "$APP_INDEX" '.apps[$index].versions |= [$newEntry] + .' app-repo-testing.json > temp.json && mv temp.json app-repo-testing.json
 
