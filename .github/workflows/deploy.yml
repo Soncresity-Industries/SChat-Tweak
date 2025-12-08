@@ -262,6 +262,11 @@ jobs:
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
       - name: Copy renamed IPA to other repo
         run: |
           cp -f "${{ env.APP_NAME }}-${{ needs.release-app.outputs.discord_version }}.ipa" website-downloads/
