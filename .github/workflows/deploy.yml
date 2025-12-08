@@ -166,11 +166,15 @@ jobs:
         run: |
           cyan -duwsgq -i discord.ipa -o ${{ env.APP_NAME }}.ipa -f ${{ env.ROOTLESS_DEB_FILE_NAME }}
 
+      - name: Rename IPA file
+        run: |
+          mv "${{ env.APP_NAME }}.ipa" "${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa"
+
       - name: Upload ipa as artifact
         uses: actions/upload-artifact@v4
         with:
           name: ipa
-          path: ${{ env.APP_NAME }}.ipa
+          path: ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
 
   release-app:
     if: |
@@ -201,7 +205,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -213,10 +217,6 @@ jobs:
           fi
           
           echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Rename IPA file
-        run: |
-          mv "${{ env.APP_NAME }}.ipa" "${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa"
 
       - name: Create GitHub Release
         id: create_release
@@ -258,7 +258,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -304,7 +304,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -388,7 +388,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -408,7 +408,7 @@ jobs:
 
       - name: Update app-repo-testing.json
         run: |
-          unzip -q ${{ env.APP_NAME }}.ipa
+          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           APP_INDEX=0
           
