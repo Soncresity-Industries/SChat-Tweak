@@ -251,6 +251,26 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           path: website-downloads
 
+      - name: Extract App Name
+        run: |
+          NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Extract Discord Version
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          
+          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
+            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
+            VERSION="${VERSION}_${BUILD}"
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          
+          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
+
       - name: Copy renamed IPA to other repo
         run: |
           cp -f "${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa" website-downloads/
@@ -281,6 +301,22 @@ jobs:
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Extract Discord Version
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          
+          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
+            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
+            VERSION="${VERSION}_${BUILD}"
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          
+          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
+          
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
@@ -349,6 +385,22 @@ jobs:
         run: |
           NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
           echo "APP_NAME=$NAME" >> $GITHUB_ENV
+
+      - name: Extract Discord Version
+        run: |
+          unzip -q ${{ env.APP_NAME }}.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          
+          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
+            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
+            VERSION="${VERSION}_${BUILD}"
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          
+          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
+          
       - name: Download IPA artifact
         uses: actions/download-artifact@v4
         with:
