@@ -220,7 +220,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
+          unzip -q ${{ env.APP_NAME }}-*.*.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -273,7 +273,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
+          unzip -q ${{ env.APP_NAME }}-*.*.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -319,7 +319,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
+          unzip -q ${{ env.APP_NAME }}-*.*.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
@@ -372,9 +372,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
-      
-      - name: List Files
-        run: ls -la
+
+      - name: Extract Discord Version
+        run: |
+          unzip -q ${{ env.APP_NAME }}-*.*.ipa
+          VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
+          
+          if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
+            BUILD=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleVersion | cut -d '"' -f 4)
+            VERSION="${VERSION}_${BUILD}"
+            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          else
+            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          fi
+          
+          echo "DISCORD_VERSION=$VERSION" >> $GITHUB_ENV
         
       - name: Push IPA to builds branch
         run: |
@@ -403,7 +415,7 @@ jobs:
 
       - name: Extract Discord Version
         run: |
-          unzip -q ${{ env.APP_NAME }}-${{ env.DISCORD_VERSION }}.ipa
+          unzip -q ${{ env.APP_NAME }}-*.*.ipa
           VERSION=$(plutil -p Payload/Discord.app/Info.plist | grep CFBundleShortVersionString | cut -d '"' -f 4)
           
           if [[ "${{ github.event.inputs.is_testflight || inputs.is_testflight }}" == "true" ]]; then
