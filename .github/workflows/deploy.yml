@@ -340,6 +340,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           merge-multiple: true
+
+      - name: Extract App Name
+        run: |
+          NAME=$(grep '^Name:' control | cut -d ' ' -f 2)
+          echo "APP_NAME=$NAME" >> $GITHUB_ENV
         
       - name: Push IPA to builds branch
         run: |
