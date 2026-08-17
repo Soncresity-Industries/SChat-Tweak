@@ -10,7 +10,7 @@
 
 static NSURL         *source;
 static NSString      *schatPatchesBundlePath;
-static NSURL         *pyoncordDirectory;
+static NSURL         *schatDirectory;
 static LoaderConfig  *loaderConfig;
 static NSTimeInterval shakeStartTime = 0;
 static BOOL           isShaking      = NO;
@@ -51,7 +51,7 @@ id                    gBridge        = nil;
     %orig(patchData, source, YES);
 
     __block NSData *bundle =
-        [NSData dataWithContentsOfURL:[pyoncordDirectory URLByAppendingPathComponent:@"bundle.js"]];
+        [NSData dataWithContentsOfURL:[schatDirectory URLByAppendingPathComponent:@"bundle.js"]];
 
     dispatch_group_t group = dispatch_group_create();
     dispatch_group_enter(group);
@@ -75,7 +75,7 @@ id                    gBridge        = nil;
                             timeoutInterval:3.0];
 
     NSString *bundleEtag = [NSString
-        stringWithContentsOfURL:[pyoncordDirectory URLByAppendingPathComponent:@"etag.txt"]
+        stringWithContentsOfURL:[schatDirectory URLByAppendingPathComponent:@"etag.txt"]
                        encoding:NSUTF8StringEncoding
                           error:nil];
     if (bundleEtag && bundle)
@@ -95,14 +95,14 @@ id                    gBridge        = nil;
                   {
                       bundle = data;
                       [bundle
-                          writeToURL:[pyoncordDirectory URLByAppendingPathComponent:@"bundle.js"]
+                          writeToURL:[schatDirectory URLByAppendingPathComponent:@"bundle.js"]
                           atomically:YES];
 
                       NSString *etag = [httpResponse.allHeaderFields objectForKey:@"Etag"];
                       if (etag)
                       {
                           [etag
-                              writeToURL:[pyoncordDirectory URLByAppendingPathComponent:@"etag.txt"]
+                              writeToURL:[schatDirectory URLByAppendingPathComponent:@"etag.txt"]
                               atomically:YES
                                 encoding:NSUTF8StringEncoding
                                    error:nil];
@@ -115,7 +115,7 @@ id                    gBridge        = nil;
     dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
 
     NSData *themeData =
-        [NSData dataWithContentsOfURL:[pyoncordDirectory
+        [NSData dataWithContentsOfURL:[schatDirectory
                                           URLByAppendingPathComponent:@"current-theme.json"]];
     if (themeData)
     {
@@ -137,7 +137,7 @@ id                    gBridge        = nil;
             }
 
             NSString *jsCode =
-                [NSString stringWithFormat:@"globalThis.__PYON_LOADER__.storedTheme=%@",
+                [NSString stringWithFormat:@"globalThis.__SCHAT_LOADER__.storedTheme=%@",
                                            [[NSString alloc] initWithData:themeData
                                                                  encoding:NSUTF8StringEncoding]];
             %orig([jsCode dataUsingEncoding:NSUTF8StringEncoding], source, async);
@@ -150,11 +150,11 @@ id                    gBridge        = nil;
     else
     {
         SChatLog(@"No theme data found at path: %@",
-                 [pyoncordDirectory URLByAppendingPathComponent:@"current-theme.json"]);
+                 [schatDirectory URLByAppendingPathComponent:@"current-theme.json"]);
     }
 
     NSData *fontData = [NSData
-        dataWithContentsOfURL:[pyoncordDirectory URLByAppendingPathComponent:@"fonts.json"]];
+        dataWithContentsOfURL:[schatDirectory URLByAppendingPathComponent:@"fonts.json"]];
     if (fontData)
     {
         NSError      *jsonError;
@@ -174,7 +174,7 @@ id                    gBridge        = nil;
         %orig(bundle, source, async);
     }
 
-    NSURL *preloadsDirectory = [pyoncordDirectory URLByAppendingPathComponent:@"preloads"];
+    NSURL *preloadsDirectory = [schatDirectory URLByAppendingPathComponent:@"preloads"];
     if ([[NSFileManager defaultManager] fileExistsAtPath:preloadsDirectory.path])
     {
         NSError *error = nil;
@@ -278,7 +278,7 @@ id                    gBridge        = nil;
             SChatLog(@"Bundle contents: %@", bundleContents);
         }
 
-        pyoncordDirectory = getPyoncordDirectory();
+        schatDirectory = getSChatDirectory();
         loaderConfig      = [[LoaderConfig alloc] init];
         [loaderConfig loadConfig];
 

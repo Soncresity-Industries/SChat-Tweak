@@ -14,7 +14,7 @@
 }
 
 - (BOOL)loadConfig {
-    NSURL *loaderConfigUrl = [getPyoncordDirectory() URLByAppendingPathComponent:@"loader.json"];
+    NSURL *loaderConfigUrl = [getSChatDirectory() URLByAppendingPathComponent:@"loader.json"];
     SChatLog(@"Attempting to load config from: %@", loaderConfigUrl.path);
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:loaderConfigUrl.path]) {
@@ -58,7 +58,7 @@
 + (instancetype)getLoaderConfig {
     SChatLog(@"Getting loader config");
 
-    NSURL *loaderConfigUrl = [getPyoncordDirectory() URLByAppendingPathComponent:@"loader.json"];
+    NSURL *loaderConfigUrl = [getSChatDirectory() URLByAppendingPathComponent:@"loader.json"];
 
     if ([[NSFileManager defaultManager] fileExistsAtPath:loaderConfigUrl.path]) {
         NSError *error     = nil;
@@ -84,7 +84,7 @@
 }
 
 - (BOOL)saveConfig {
-    NSURL *loaderConfigUrl = [getPyoncordDirectory() URLByAppendingPathComponent:@"loader.json"];
+    NSURL *loaderConfigUrl = [getSChatDirectory() URLByAppendingPathComponent:@"loader.json"];
     NSDictionary *json     = @{
         @"customLoadUrl" :
             @{@"enabled" : @(self.customLoadUrlEnabled), @"url" : self.customLoadUrl.absoluteString}

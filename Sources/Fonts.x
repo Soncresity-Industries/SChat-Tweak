@@ -81,7 +81,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
     }
 
     NSString *fontJson = [NSString
-        stringWithContentsOfURL:[getPyoncordDirectory() URLByAppendingPathComponent:@"fonts.json"]
+        stringWithContentsOfURL:[getSChatDirectory() URLByAppendingPathComponent:@"fonts.json"]
                        encoding:NSUTF8StringEncoding
                           error:nil];
     if (fontJson)
@@ -97,7 +97,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
         NSURL    *fontURL       = [NSURL URLWithString:url];
         NSString *fontExtension = fontURL.pathExtension;
 
-        NSURL *fontCachePath = [[[getPyoncordDirectory() URLByAppendingPathComponent:@"downloads"
+        NSURL *fontCachePath = [[[getSChatDirectory() URLByAppendingPathComponent:@"downloads"
                                                                          isDirectory:YES]
             URLByAppendingPathComponent:@"fonts"
                             isDirectory:YES] URLByAppendingPathComponent:fontDefName
@@ -170,7 +170,7 @@ void patchFonts(NSDictionary<NSString *, NSString *> *mainFonts, NSString *fontD
                                                                          error:&jsonError];
                     if (!jsonError)
                     {
-                        [jsonData writeToURL:[getPyoncordDirectory()
+                        [jsonData writeToURL:[getSChatDirectory()
                                                  URLByAppendingPathComponent:@"fontMap.json"]
                                   atomically:YES];
                     }

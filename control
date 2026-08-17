@@ -5,7 +5,7 @@ Architecture: iphoneos-arm
 Description: A client modification for Discord's mobile app.
 Maintainer: SkyKing_PX
 Author: Soncresity Industries
-Icon: https://i.ibb.co/CpmP7FBM/si-logo-new.png
+Icon: https://soncresity.industries/logo.png
 Section: Tweaks
 Depends: mobilesubstrate (>= 0.9.5000)
 Conflicts: app.enmity, mod.vendetta, app.unbound, app.pyoncord

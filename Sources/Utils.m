@@ -9,21 +9,21 @@ extern id gBridge;
 
 BOOL isJailbroken = NO;
 
-NSURL *getPyoncordDirectory(void) {
+NSURL *getSChatDirectory(void) {
     NSFileManager *fileManager  = [NSFileManager defaultManager];
     NSURL *documentDirectoryURL = [[fileManager URLsForDirectory:NSDocumentDirectory
                                                        inDomains:NSUserDomainMask] lastObject];
 
-    NSURL *pyoncordFolderURL = [documentDirectoryURL URLByAppendingPathComponent:@"pyoncord"];
+    NSURL *schatFolderURL = [documentDirectoryURL URLByAppendingPathComponent:@"schat"];
 
-    if (![fileManager fileExistsAtPath:pyoncordFolderURL.path]) {
-        [fileManager createDirectoryAtURL:pyoncordFolderURL
+    if (![fileManager fileExistsAtPath:schatFolderURL.path]) {
+        [fileManager createDirectoryAtURL:schatFolderURL
               withIntermediateDirectories:YES
                                attributes:nil
                                     error:nil];
     }
 
-    return pyoncordFolderURL;
+    return schatFolderURL;
 }
 
 UIColor *hexToUIColor(NSString *hex) {
@@ -121,18 +121,18 @@ void loadCustomBundleFromURL(NSURL *url, UIViewController *viewController) {
 
 void deletePlugins(void) {
     [[NSFileManager defaultManager]
-        removeItemAtURL:[getPyoncordDirectory() URLByAppendingPathComponent:@"plugins"]
+        removeItemAtURL:[getSChatDirectory() URLByAppendingPathComponent:@"plugins"]
                   error:nil];
 }
 
 void deleteThemes(void) {
     [[NSFileManager defaultManager]
-        removeItemAtURL:[getPyoncordDirectory() URLByAppendingPathComponent:@"themes"]
+        removeItemAtURL:[getSChatDirectory() URLByAppendingPathComponent:@"themes"]
                   error:nil];
 }
 
 void deleteAllData(UIViewController *presenter) {
-    [[NSFileManager defaultManager] removeItemAtURL:getPyoncordDirectory() error:nil];
+    [[NSFileManager defaultManager] removeItemAtURL:getSChatDirectory() error:nil];
     gracefulExit(presenter);
 }
 
@@ -423,7 +423,7 @@ static void showCommitsForBranch(NSString *branch, UIViewController *presenter,
 }
 
 void removeCachedBundle(void) {
-    NSURL *bundleURL = [getPyoncordDirectory() URLByAppendingPathComponent:@"bundle.js"];
+    NSURL *bundleURL = [getSChatDirectory() URLByAppendingPathComponent:@"bundle.js"];
     NSError *error   = nil;
     [[NSFileManager defaultManager] removeItemAtURL:bundleURL error:&error];
     if (error) {
