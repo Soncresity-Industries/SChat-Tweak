@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
 
-#define LOG_PREFIX         @"[SChat]"
-#define SChatLog(fmt, ...) NSLog((LOG_PREFIX @" " fmt), ##__VA_ARGS__)
+FOUNDATION_EXPORT void SChatLogImpl(NSString *format, ...) NS_FORMAT_FUNCTION(1, 2);
+
+#define SChatLog(fmt, ...) SChatLogImpl((fmt), ##__VA_ARGS__)

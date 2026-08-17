@@ -16,11 +16,19 @@ NSURL *getSChatDirectory(void) {
 
     NSURL *schatFolderURL = [documentDirectoryURL URLByAppendingPathComponent:@"schat"];
 
-    if (![fileManager fileExistsAtPath:schatFolderURL.path]) {
-        [fileManager createDirectoryAtURL:schatFolderURL
-              withIntermediateDirectories:YES
-                               attributes:nil
-                                    error:nil];
+    BOOL isDirectory = NO;
+    BOOL pathExists = [fileManager fileExistsAtPath:schatFolderURL.path isDirectory:&isDirectory];
+    if (!pathExists || !isDirectory) {
+        NSError *error = nil;
+        if (![fileManager createDirectoryAtURL:schatFolderURL
+                   withIntermediateDirectories:YES
+                                    attributes:nil
+                                         error:&error]) {
+            SChatLog(@"Failed to create SChat data directory at %@: %@", schatFolderURL.path,
+                     error);
+        } else {
+            SChatLog(@"Using SChat data directory at %@", schatFolderURL.path);
+        }
     }
 
     return schatFolderURL;
